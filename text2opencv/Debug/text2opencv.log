@@ -1,20 +1,20 @@
-﻿生成启动时间为 2016/2/29 15:39:56。
+﻿生成启动时间为 2016/3/7 22:17:39。
      1>项目“E:\vs2010project\text2opencv\text2opencv\text2opencv.vcxproj”在节点 2 上(build 个目标)。
      1>InitializeBuildStatus:
-         正在创建“Debug\text2opencv.unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+         正在对“Debug\text2opencv.unsuccessfulbuild”执行 Touch 任务。
        ClCompile:
          所有输出均为最新。
-         I:\vs2010\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"StdAfx.h" /Fp"Debug\text2opencv.pch" /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt text2opencv.cpp
+         I:\vs2010\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"StdAfx.h" /Fp"Debug\text2opencv.pch" /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt text2opencv.cpp
          text2opencv.cpp
      1>i:\opencv3.0\opencv\build\include\opencv2\core\mat.hpp(1965): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
      1>i:\opencv3.0\opencv\build\include\opencv2\core\persistence.hpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
      1>i:\opencv3.0\opencv\build\include\opencv2\core\mat.hpp(1965): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
      1>i:\opencv3.0\opencv\build\include\opencv2\core\utility.hpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
      1>i:\opencv3.0\opencv\build\include\opencv2\core\utility.hpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-     1>e:\vs2010project\text2opencv\text2opencv\text2opencv.cpp(40): warning C4305: “初始化”: 从“double”到“float”截断
-     1>e:\vs2010project\text2opencv\text2opencv\text2opencv.cpp(44): warning C4305: “初始化”: 从“double”到“float”截断
-     1>e:\vs2010project\text2opencv\text2opencv\text2opencv.cpp(46): warning C4244: “初始化”: 从“int”转换到“float”，可能丢失数据
-     1>e:\vs2010project\text2opencv\text2opencv\text2opencv.cpp(47): warning C4244: “初始化”: 从“int”转换到“float”，可能丢失数据
+     1>e:\vs2010project\text2opencv\text2opencv\text2opencv.cpp(81): warning C4305: “初始化”: 从“double”到“float”截断
+     1>e:\vs2010project\text2opencv\text2opencv\text2opencv.cpp(85): warning C4305: “初始化”: 从“double”到“float”截断
+     1>e:\vs2010project\text2opencv\text2opencv\text2opencv.cpp(87): warning C4244: “初始化”: 从“int”转换到“float”，可能丢失数据
+     1>e:\vs2010project\text2opencv\text2opencv\text2opencv.cpp(88): warning C4244: “初始化”: 从“int”转换到“float”，可能丢失数据
        ManifestResourceCompile:
          所有输出均为最新。
        Link:
@@ -34,4 +34,4 @@
 
 生成成功。
 
-已用时间 00:00:01.97
+已用时间 00:00:02.12
