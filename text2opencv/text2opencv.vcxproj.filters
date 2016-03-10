@@ -16,12 +16,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
-    <None Include="pic\IMG_5594.jpg">
-      <Filter>资源文件</Filter>
-    </None>
-    <None Include="pic\IMG_5595.jpg">
-      <Filter>资源文件</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
