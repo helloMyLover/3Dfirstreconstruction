@@ -7,7 +7,7 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <vector>
 #include <opencv2\features2d\features2d.hpp>
-
+#include <opencv2/xfeatures2d.hpp>
 
 using namespace cv;
 using namespace std;
@@ -15,34 +15,37 @@ void changeSizetoSame(Mat & inputImage);
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	//cvNamedWindow("src",1);
-	Mat input1=imread("pic//IMG_5597.jpg");
+//	Ptr<SIFT> detector = SIFT::create();
+	Mat input1=imread("pic//IMG_5597.jpg",IMREAD_GRAYSCALE );
 	Mat input2=imread("pic//IMG_5598.jpg");
-	Mat temp=input1;
+	Mat descriptors;
+	vector<KeyPoint> keypoints;
+	//initModule_nonfree();
 	if(!input1.data || !input2.data)
 	{
 		printf("Read image data Failure\n");
 		return 1;
 	}
-	//namedWindow("src",CV_WINDOW_AUTOSIZE);
-	changeSizetoSame(input1);
-	imshow("src",input1);
+	//changeSizetoSame(input1);
+	imshow("src",input2);
 	cvWaitKey(0);
-	cvWaitKey(0);
-	
+	cv::Ptr<Feature2D> f2d = xfeatures2d::SIFT::create();
 	//threshold(input,img_threshold,60,255,CV_THRESH_BINARY_INV);
 
+	std::vector<KeyPoint> keypoints_1, keypoints_2;    
+  f2d->detect( input1, keypoints_1 );
+  f2d->detect( input2, keypoints_2 );
 
-	//Mat img_threshold;
-	//Mat img_contours;
-	//img_threshold.copyTo(img_ucontours);
-	//vector<vector<Point>> contours;
-//	findContours(img_contours,contours,CV_RETR_EXTERNAL,CV_CHAIN_APPROX_NONE);
-	//vector<int> test_data;
-	//vector<int>::iterator check;
-	//for( check = test_data.begin() ; check != test_data.end() ; check ++ )
-	//{	
-	//}
+  //-- Step 2: Calculate descriptors (feature vectors)    
+  Mat descriptors_1, descriptors_2;    
+  f2d->compute( input1, keypoints_1, descriptors_1 );
+  f2d->compute( input2, keypoints_2, descriptors_2 );
+
+  //-- Step 3: Matching descriptor vectors using BFMatcher :
+  BFMatcher matcher;
+  std::vector< DMatch > matches;
+  matcher.match( descriptors_1, descriptors_2, matches );
+//	Ptr<Feature2D> sift = Algorithm::create<Feature2D>("Feature2D.SIFT");
 	destroyAllWindows();
 	return 0;
 }
@@ -105,5 +108,6 @@ void pyramidSize(const Mat inputImage,Mat & outImage)
 	temp=outImage;
 	destroyWindow("src");
 }
+
 
 
