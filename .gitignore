@@ -1,0 +1,8 @@
+#忽略Debug目录
+Debug
+ipch
+*.[tlog]
+*.[ipch]
+*.[log]
+*.[idb]
+*.[pdb]
