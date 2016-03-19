@@ -11,6 +11,7 @@
 #include <opencv2\features2d\features2d.hpp>
 #include <opencv2/xfeatures2d.hpp>
 #include <opencv2/xfeatures2d/nonfree.hpp>
+#include"TimerCounter.h"
 
 using namespace cv;
 using namespace std;
@@ -18,6 +19,7 @@ void changeSizetoSame(Mat & inputImage);
 
 int _tmain(int argc, _TCHAR* argv[])
 {
+	TimerCounter tc;
 //	Ptr<SIFT> detector = SIFT::create();
 	Mat input1=imread("pic//IMG_5597.jpg" );
 	Mat input2=imread("pic//IMG_5598.jpg");
@@ -32,7 +34,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	//SiftFeatureDetector detector;
 	cv::Ptr<Feature2D> f2d = xfeatures2d::SIFT::create();
 	//threshold(input,img_threshold,60,255,CV_THRESH_BINARY_INV);
-	
+	tc.Start();
 	std::vector<KeyPoint> keypoints_1, keypoints_2;    
 	f2d->detect( input1, keypoints_1 );
 	f2d->detect( input2, keypoints_2 );
@@ -45,9 +47,9 @@ int _tmain(int argc, _TCHAR* argv[])
 	BFMatcher matcher;
 	std::vector< DMatch > matches;
 	matcher.match( descriptors_1, descriptors_2, matches );
-
+	tc.Stop();
 	//Show the result
-		Mat outImg=input1;
+	Mat outImg=input1;
 	Mat outImg2;
 	drawKeypoints(input1,keypoints_1,outImg, Scalar::all(-1),DrawMatchesFlags::DEFAULT);
 	imshow("hello",outImg);
@@ -61,7 +63,9 @@ int _tmain(int argc, _TCHAR* argv[])
 	destroyWindow("hello");
 	destroyWindow("src");
 	matches.swap(matches);
-	cout<<"matches capacity : "<<matches.capacity()<<endl;
+	cout<<"matches capacity : "<<matches.capacity()<<endl
+		<<"run time : "<<tc.dbTime<<" s."<<endl;
+	
 	keypoints_1.swap(keypoints_1);
 	keypoints_2.swap(keypoints_1);
 	f2d.swap(f2d);
