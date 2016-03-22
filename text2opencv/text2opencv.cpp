@@ -12,24 +12,35 @@
 #include <opencv2/xfeatures2d.hpp>
 #include <opencv2/xfeatures2d/nonfree.hpp>
 #include"TimerCounter.h"
+#include <process.h>
+#include <opencv2\core\base.hpp>
+//#include "processImg.h"
 
 using namespace cv;
 using namespace std;
 void changeSizetoSame(Mat & inputImage);
+//将多个图像拼在一起
+bool SplicePic(vector<Mat> inputImg,Mat &outImg);
 
 int _tmain(int argc, _TCHAR* argv[])
 {
 	TimerCounter tc;
+	vector<Mat> inputImg;
 //	Ptr<SIFT> detector = SIFT::create();
 	Mat input1=imread("pic//IMG_5597.jpg" );
 	Mat input2=imread("pic//IMG_5598.jpg");
 	Mat descriptors;
+	Mat outTestImg;
 	//vector<KeyPoint> keypoints;
 	if(!input1.data || !input2.data)
 	{
 		printf("Read image data Failure\n");
 		return 1;
 	}
+	inputImg.push_back(input1);
+	inputImg.push_back(input2);
+	SplicePic(inputImg,outTestImg);
+
 	//changeSizetoSame(input1);  //change Img Size 
 	//SiftFeatureDetector detector;
 	cv::Ptr<Feature2D> f2d = xfeatures2d::SIFT::create();
@@ -38,7 +49,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	std::vector<KeyPoint> keypoints_1, keypoints_2;    
 	f2d->detect( input1, keypoints_1 );
 	f2d->detect( input2, keypoints_2 );
-
+	tc.Stop();
 	  //-- Step 2: Calculate descriptors (feature vectors)    
 	Mat descriptors_1, descriptors_2;    
 	f2d->compute( input1, keypoints_1, descriptors_1 );
@@ -47,15 +58,16 @@ int _tmain(int argc, _TCHAR* argv[])
 	BFMatcher matcher;
 	std::vector< DMatch > matches;
 	matcher.match( descriptors_1, descriptors_2, matches );
-	tc.Stop();
+	
 	//Show the result
 	Mat outImg=input1;
 	Mat outImg2;
 	drawKeypoints(input1,keypoints_1,outImg, Scalar::all(-1),DrawMatchesFlags::DEFAULT);
 	imshow("hello",outImg);
-	cvWaitKey(0);
+//	cvWaitKey(0);
 	drawMatches(input1,keypoints_1,input1,keypoints_1,matches,outImg2);
-	imshow("src",outImg2);
+	cout<<"outimgSize2 ："<<outImg2.size()<<endl;
+	//imshow("src",outImg2);
 //	Ptr<Feature2D> sift = Algorithm::create<Feature2D>("Feature2D.SIFT");
 	cvWaitKey(0);
 
@@ -108,7 +120,7 @@ void changeSizetoSame(Mat & inputImage)
 		cvtColor(inputImage,inputImage,CV_BGR2GRAY);
 	}
 }
-
+//press the key to zoom image
 void pyramidSize(const Mat inputImage,Mat & outImage)
 {
 	Mat temp=inputImage;
@@ -131,6 +143,51 @@ void pyramidSize(const Mat inputImage,Mat & outImage)
 	imshow("src",outImage);
 	temp=outImage;
 	destroyWindow("src");
+}
+
+//splice the image
+bool SplicePic(vector<Mat> inputImg,Mat &outImg)
+{
+	
+	Size outTempSize;
+	vector<Size> imgSize;
+	if(inputImg.begin()==inputImg.end())
+	{
+		cerr<<"No image inside."<<endl;
+		return 1;
+	}
+	for(vector<Mat>::iterator it=inputImg.begin(); it!=inputImg.end(); it++)
+	{
+		Mat tempImg;
+		Size tempSize;
+		//imshow("new",*it);  show the pic
+		tempImg=(Mat)*it;
+		tempSize=tempImg.size();
+		outTempSize.width +=tempSize.width;
+		if(outTempSize.height<tempSize.height)
+		{
+			outTempSize.height=tempSize.height;
+		}
+		imgSize.push_back(outTempSize);
+	}
+	cout<<"outImg width :"<<outTempSize.width<<" height :"<<outTempSize.height<<endl;
+	//if(outImg.cols < outTempSize.width || outImg.rows < outTempSize.height)
+	//{
+	//	CV_Error(Error::StsBadSize,"outImg has size less than inputImg need to draw together");
+	//}
+	//create big img
+	cv::Scalar Color(255, 255, 255);  
+	if(inputImg[0].type() == 1)
+		Color=cv::Scalar(255);
+	outImg=cv::Mat(outTempSize.height,outTempSize.width,inputImg[0].type(),Color);
+
+	//copy all input img to big img
+	for(int i=inputImg.size()-1;i>=0;i--)
+	{
+		Size tempSize=inputImg[i].size();
+		cv::Mat ROI = outImg(cv::Rect(imgSize[i].width-tempSize.width, 0, tempSize.width, tempSize.height));
+		inputImg[i].copyTo(ROI);
+	}
 }
 
 
